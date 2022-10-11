@@ -1,9 +1,9 @@
-![logo](./img/logo.png)
 
-Welcome to Universal Profiling documentation.
+<img src="https://elastic.github.io/universal-profiling-documentation/img/logo.png"  width="400" height="400">
 
-Universal Profiling is in **private beta**, which means that this documentation exists as guidance during the process of
-trying out the product, with some limitations and sharp corners.
+Welcome to the **private beta** documentation for Universal Profiling.
+
+The purpose of this documentation is to assist you in configuring and using Universal Profiling. In return, we would appreciate your feedback on your experience of the product, and any other profiling  pain-points you may have.
 
 Continue to the next section to get started with Universal Profiling.
 
