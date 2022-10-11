@@ -51,7 +51,7 @@ Follow these steps to enable the Universal Profiling app in Kibana:
    to have the line from step four added in Kibana user settings.
 
 Once Kibana has the Universal Profiling app enabled, it's visible under `Observability` in the menu on the left-hand side.
-You can now go ahead and configure Elasticsearch, Fleet and APM to allow ingesting data:
+You can now go ahead and configure data ingestion:
 
 1. Fetch the Cloud ID of your deployment from the Cloud console.
    ![cloud ID](./img/cloud-id.png)
