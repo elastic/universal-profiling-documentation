@@ -164,7 +164,7 @@ malfunction:
    Failed to probe tracepoint
    ```
 
-1. The host-agent is not able to connect to the collector.
+1. The host-agent is not able to connect to Elastic Cloud.
    In this case you should see a message like the following:
    ```text
    Failed to setup gRPC connection (retrying...): context deadline exceeded
