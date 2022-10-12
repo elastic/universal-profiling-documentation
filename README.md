@@ -45,8 +45,8 @@ each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
 | Kibana              | 8 GB                   | 1     |
 | Integrations Server | 8 GB                   | 1     |
 
-Even if you have a smaller fleet to be profiled, for an optimal user experience we 
-recommend to configure at least 4 GB of memory for Integrations Server as well as Kibana.
+Even if you have a smaller fleet to be profiled, for an optimal user experience we recommend to configure at minimum
+2 zones for Elasticsearch, 4 GB of memory for Integrations Server as well as Kibana.
 
 #### Setting up Universal Profiling on a Cloud deployment
 
@@ -94,6 +94,7 @@ If everything is working, you can deploy the host-agent across your fleet in the
 
 1. Fetch the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
+1. Copy again the Cloud ID of your deployment as done in the previous section.
 1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
    You can list all available package formats by running
    ```bash
@@ -101,7 +102,8 @@ If everything is working, you can deploy the host-agent across your fleet in the
    ```
 1. Print the `binary` configuration to test it on your current Linux machine:
    ```bash
-   ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
+   ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --cloud-id=<CLOUD_ID> \
+     --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
 1. Run the host-agent with the provided steps, testing your Universal Profiling deployment is working as expected.
    The host-agent will print out logs that will notify if the connection to Elastic Cloud is not working.
@@ -111,7 +113,7 @@ If everything is working, you can deploy the host-agent across your fleet in the
    processes.
 1. You can now print more configurations to deploy the host-agents on your fleet.
 
-**Note on the host-agent configuration**
+**Notes on the host-agent configuration**
 
 `elastic-profiling config` prints a default configuration that allows ingesting data into a Cloud deployment.
 There is only one config knob that you can change: `project-id` (default value is `1`).
@@ -123,6 +125,16 @@ You are free to assign any non-zero, unsigned integer to a host-agent deployment
 slice profiling data in Kibana.
 You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
 i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
+
+Note that the printed configuration uses a `stable` version.
+This is good for testing environments, but for production we recommend to use immutable, versioned artifacts.
+
+The host-agent versioning scheme is **not aligned with the Elastic stack version**.
+
+The OS packages downloaded from `relases.prodfiler.com` have a version in their file name.
+
+For container images, you can find a list of versions in the
+[Elastic container library repository](https://container-library.elastic.co/r/observability/profiling-agent).
 
 #### Adding symbols for native frames
 
