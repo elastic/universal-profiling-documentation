@@ -9,20 +9,19 @@ Continue to the next section to get started with Universal Profiling.
 
 ## Getting started with Universal Profiling
 
-At the moment, Universal Profiling is in **available only on [Elastic Cloud](http://cloud.elastic.co)**.
+At the moment, Universal Profiling is **available only on [Elastic Cloud](http://cloud.elastic.co)**.
 Eventually, it may also be available in self-managed or open-source distributions of the Elastic stack.
 
 ### Elastic Cloud
 
-Enabling Universal Profiling on a deployment requires some manual actions.
-Many of these manual actions will be replaced by automated configurations in Elastic Cloud in the upcoming releases.
+Enabling Universal Profiling on a deployment requires some manual actions for now but many of them will be automated in upcoming releases.
 
-Before you dive into the setup, you will need:
+You need the following prerequisites:
 
 - a Cloud account with a Platinum subscription
 - a deployment at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one)
-- the Integrations Server should be enabled in the deployment
-- credentials (either an API key or username/password) granted with the `superuser` Elasticsearch role (typically,
+- the Integrations Server must be enabled in the deployment
+- credentials (either an API key or username/password) for the `superuser` Elasticsearch role (typically,
   the `elastic` user)
 - a Linux machine with a terminal to run commands
 
@@ -37,28 +36,26 @@ TODO
 
 Follow these steps to enable the Universal Profiling app in Kibana:
 
-1. Login to `cloud.elastic.co` and locate your deployment.
+1. Login to https://cloud.elastic.co and locate your deployment.
 2. Edit the deployment.
 3. Scroll down to the Kibana section, and click on "Edit user settings".
    ![edit Kibana user settings](./img/kibana-edit-user-settings.png)
-4. Add a line in the user settings:
+4. Add this line in the user settings:
    ```yaml
    xpack.profiling.enabled: true
    ```
    ![edit Kibana user settings](./img/kibana-edit-user-settings-popup.png)
 5. Go back and scroll to the bottom of the page.
-6. Save the settings by clicking on Save.
+6. Save the settings by clicking on `Save`.
 7. If you encounter an error during the configuration change, [submit a support request](#submit-a-support-request)
-   to add the previous line in Kibana user settings.
+   to have the line from step four added in Kibana user settings.
 
-Once Kibana has the Universal Profiling app enabled, it's visible under Observability in the left menu.
-You can now go ahead and configure Elasticsearch, Fleet and APM to allow ingesting data.
-
-These steps will guide you in configuring Elasticsearch, Fleet and APM to enable the Universal Profiling storage:
+Once Kibana has the Universal Profiling app enabled, it's visible under `Observability` in the menu on the left-hand side.
+You can now go ahead and configure data ingestion:
 
 1. Fetch the Cloud ID of your deployment from the Cloud console.
    ![cloud ID](./img/cloud-id.png)
-1. Within your Linux machine, open a terminal to run the next steps.
+1. On your Linux machine, open a terminal to execute the next steps.
 1. Download and extract the `elastic-profiling` CLI:
    ```bash
    wget -O- https://releases.prodfiler.com/stable/elastic-profiling.tgz | tar xz
@@ -75,29 +72,33 @@ These steps will guide you in configuring Elasticsearch, Fleet and APM to enable
 
 #### Installing the host-agent
 
+The host-agent is the component that is profiling your fleet and needs to be installed and configured on every machine 
+that you want to profile. The following instructions guide you to do a basic setup of host-agent on your Linux machine.
+If everything is working, you can deploy the host-agent across your fleet in the last step.
+
 1. Fetch the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
-1. Use `elastic-profiling` to print the host-agent configuration for various platforms.
-   You can list all available platforms by running
+1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
+   You can list all available package formats by running
    ```bash
    ./elastic-profiling help config
    ```
-1. Print the `binary` configuration to test it out on the VM you are using:
+1. Print the `binary` configuration to test it on your current Linux machine:
    ```bash
    ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
 1. Run the host-agent with the provided steps, testing your Universal Profiling deployment is working as expected.
-   The host-agent will print out logs that will notify if the connection to the collector is not working.
+   The host-agent will print out logs that will notify if the connection to Elastic Cloud is not working.
    In such case, see [troubleshooting and support](#troubleshooting-and-support).
-1. In a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
-   Move to the `Threads` tab in Observability > Universal Profiling > Stacktraces, you should see a graph and a list of
+1. After a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
+   Move to the `Threads` tab in Observability > Universal Profiling > Stacktraces. You should see a graph and a list of
    processes.
 1. You can now print more configurations to deploy the host-agents on your fleet.
 
 **Note on the host-agent configuration**
 
 `elastic-profiling config` prints a default configuration that allows ingesting data into a Cloud deployment.
-There is only a config knob that you can change: `project-id` (default value is `1`).
+There is only one config knob that you can change: `project-id` (default value is `1`).
 
 The `-project-id` flag, or the `project-id` key in the host-agent configuration file, is a parameter to split
 profiling data into logical groups.
@@ -149,7 +150,7 @@ malfunction:
 1. The host-agent is running on an unsupported version of Linux kernel, or it can't perform its operations because of
    missing kernel features.
 
-   In case of outdated kernel version, this message will be logged:
+   In case of an outdated kernel version, this message will be logged:
    ```text
    Host Agent requires kernel version 4.15 or newer but got 3.10.0
    ```
@@ -163,7 +164,7 @@ malfunction:
    Failed to probe tracepoint
    ```
 
-1. The host-agent is not able to connect to the collector.
+1. The host-agent is not able to connect to Elastic Cloud.
    In this case you should see a message like the following:
    ```text
    Failed to setup gRPC connection (retrying...): context deadline exceeded
