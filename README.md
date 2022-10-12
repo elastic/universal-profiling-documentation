@@ -1,5 +1,5 @@
 
-<img src="https://elastic.github.io/universal-profiling-documentation/img/logo.png"  width="400" height="400">
+<center><img src="https://elastic.github.io/universal-profiling-documentation/img/logo.png"  width="400" height="400"></center>
 
 Welcome to the **private beta** documentation for Universal Profiling.
 
