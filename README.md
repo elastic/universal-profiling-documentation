@@ -72,22 +72,26 @@ You can now go ahead and configure data ingestion:
 
 #### Installing the host-agent
 
+The host-agent is the component that is profiling your fleet and needs to be installed and configured on every machine 
+that you want to profile. The following instructions guide you to do a basic setup of host-agent on your Linux machine.
+If everything is working, you can deploy the host-agent across your fleet in the last step.
+
 1. Fetch the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
-1. Use `elastic-profiling` to print the host-agent configuration for various platforms.
-   You can list all available platforms by running
+1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
+   You can list all available package formats by running
    ```bash
    ./elastic-profiling help config
    ```
-1. Print the `binary` configuration to test it out on the VM you are using:
+1. Print the `binary` configuration to test it on your current Linux machine:
    ```bash
    ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
 1. Run the host-agent with the provided steps, testing your Universal Profiling deployment is working as expected.
-   The host-agent will print out logs that will notify if the connection to the collector is not working.
+   The host-agent will print out logs that will notify if the connection to Elastic Cloud is not working.
    In such case, see [troubleshooting and support](#troubleshooting-and-support).
-1. In a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
-   Move to the `Threads` tab in Observability > Universal Profiling > Stacktraces, you should see a graph and a list of
+1. After a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
+   Move to the `Threads` tab in Observability > Universal Profiling > Stacktraces. You should see a graph and a list of
    processes.
 1. You can now print more configurations to deploy the host-agents on your fleet.
 
