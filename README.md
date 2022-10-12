@@ -35,7 +35,7 @@ The following diagram summarize the steps we are going to detail below.
 #### Deployment reference
 
 Before creating a new cluster, or upgrading an existing one to 8.5, please review the suggested configuration tier
-for each Elastic stack components.
+for each Elastic stack component.
 
 The reference deployment configuration in the table was tested to support profiling data from a fleet up to 500 hosts,
 each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
@@ -46,8 +46,8 @@ each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
 | Kibana              | 8 GB                   | 1     |
 | Integrations Server | 8 GB                   | 1     |
 
-Even if you have a smaller fleet to be profiled, for an optimal user experience we recommend to never set Integrations
-Server below the 4 GB memory tier, and Kibana below the 4 GB memory tier.
+Even if you have a smaller fleet to be profiled, for an optimal user experience we 
+recommend to configure at least 4 GB of memory for Integrations Server as well as Kibana.
 
 #### Setting up Universal Profiling on a Cloud deployment
 
@@ -216,5 +216,5 @@ request if the problem is in the host-agent, or the Kibana app.
 
 ##### Send feedback
 
-If troubleshooting and support are not working for you, or you have any doubts or feedback that you want to share about
+If troubleshooting and support are not working for you, or you have any other feedback that you want to share about
 the product, send the Profiling team an email to `profiling-feedback@elastic.co`.
