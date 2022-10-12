@@ -29,10 +29,26 @@ With the above points sorted out, you are ready to get started!
 
 The following diagram summarize the steps we are going to detail below.
 
-#### Setting up Universal Profiling on a Cloud deployment
+![user-diagram](./img/user-diagram.png)
 
-Suggested configuration tier for Elastic stack components:
-TODO
+#### Deployment reference
+
+Before creating a new cluster, or upgrading an existing one to 8.5, please review the suggested configuration tier
+for each Elastic stack component.
+
+The reference deployment configuration in the table was tested to support profiling data from a fleet up to 500 hosts,
+each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
+
+| Component           | Size per zone (memory) | Zones | 
+|---------------------|------------------------|-------|
+| Elasticsearch       | 64 GB                  | 2     |
+| Kibana              | 8 GB                   | 1     |
+| Integrations Server | 8 GB                   | 1     |
+
+Even if you have a smaller fleet to be profiled, for an optimal user experience we 
+recommend to configure at least 4 GB of memory for Integrations Server as well as Kibana.
+
+#### Setting up Universal Profiling on a Cloud deployment
 
 Follow these steps to enable the Universal Profiling app in Kibana:
 
@@ -197,4 +213,9 @@ To enable debug logs, add the `-verbose` command-line flag or the `verbose true`
 Reach the [support request page](https://cloud.elastic.co/support) in the Cloud console.
 
 Depending on what type of problem you faced during the setup or operation of Universal Profiling, please specify in the
-request 
+request if the problem is in the host-agent, or the Kibana app.
+
+##### Send feedback
+
+If troubleshooting and support are not working for you, or you have any other feedback that you want to share about
+the product, send the Profiling team an email to `profiling-feedback@elastic.co`.
