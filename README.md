@@ -27,10 +27,6 @@ You need the following prerequisites:
 
 With these sorted out, you are ready to get started!
 
-The following diagram summarizes the steps we are going to describe below.
-
-![user-diagram](./img/user-diagram.png)
-
 #### Deployment reference
 
 Before creating a new cluster, or upgrading an existing one to 8.5, please review the suggested configuration tier
