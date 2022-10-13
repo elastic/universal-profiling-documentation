@@ -16,7 +16,7 @@ Eventually, it may also be available in self-managed or open-source distribution
 
 ### Elastic Cloud
 
-Enabling Universal Profiling on a deployment requires some manual actions for now but many of them will be automated in
+Enabling Universal Profiling on a deployment requires some manual actions, but many of them will be automated in
 upcoming releases.
 
 You need the following prerequisites:
@@ -95,8 +95,8 @@ If everything is working, you can deploy the host-agent across your fleet in the
 1. Fetch the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
 1. Copy again the Cloud ID of your deployment as done in the previous section.
-1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package
-   formats.
+1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various deployment
+   methods.
    You can list all available package formats by running
    ```bash
    ./elastic-profiling help config
