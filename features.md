@@ -15,10 +15,24 @@ started. You are presented with the [stacktraces](#stacktraces) view.
 Universal Profiling currently supports CPU profiling (via stack sampling), and it does not have memory profiling yet.
 
 From the landing page, you can get an overview of the entirety of your data, and slice and dice into more detailed
-sections of your fleet by using KQL queries in the search bar. You can apply time-based filtering and fields filtering,
-inspecting more narrow portion of data and diving deeper and deeper into your system CPU usage.
+sections of your fleet by using filtering queries in the search bar.
+You can apply both time-based filters and property filters, inspecting more narrow portions of data and drilling down
+into how much various parts of your infrastructure consume CPU usage over time.
 
-See [filtering](TODO) for more details on how to slice data.
+See [filtering](TODO) for more details on how to slice data, and [differential views](TODO) to know how to compare
+two time ranges to detect performance improvements or regressions.
+
+#### Premise on debug symbols
+
+Profiles' stacktrace may be either symbolized, showing the full source code's filename and line number, or partially
+symbolized, or not symbolized at all.
+
+Notice how unsymbolized frames _do not_ show a filename and line number, but a hexadecimal number or `<unsymbolized>`.
+
+Adding symbols for unsymbolized frames is a manual operation for now, see
+[Adding symbols for native frames](./README.md#adding-symbols-for-native-frames).
+
+![stacktraces unsymbolized](./img/stacktraces-unsymbolized-view.png)
 
 #### Stacktraces
 
@@ -62,13 +76,6 @@ stacktrace.
 
 ![stacktraces show more](./img/stacktraces-detailed-view.png)
 
-_Note_: the stacktrace may be either symbolized, showing the full source code's filename and line number, or partially
-symbolized, or not symbolized at all.
-
-Notice how unsymbolized frames _do not_ show a filename and line number, but a hexadecimal number or `<unsymbolized>`.
-
-![stacktraces unsymbolized](./img/stacktraces-unsymbolized-view.png)
-
 Some possible use cases for the stacktraces view:
 
 * discover which container, deployed across on a multitude of machines, is the heaviest CPU hitter
@@ -97,7 +104,8 @@ You can navigate a flamegraph on two axis:
 
 Drag the graph up, down, right or left to move the visible area.
 
-You can zoom in and out of a subset of stacktraces, by clicking on individual frames or scrolling up in the colored view.
+You can zoom in and out of a subset of stacktraces, by clicking on individual frames or scrolling up in the colored
+view.
 
 The summary square in the bottom-left corner of the graph lets you shift the visible area of the graph.
 Note how the position of summary square is adjusted when you drag flamegraph, and vice-versa: moving the summary square
@@ -108,9 +116,38 @@ Clicking on each rectangle in the flamegraph will highlight the frame's detail i
 
 ![flamegraph frame details](./img/flamegraph-detailed-view.png)
 
+Below the graph area, a search bar allows to highlight specific text in the flamegraph; here you may search binaries,
+function or file names and move over the occurrences.
+
+Common use cases for flamegraphs:
+
+* detect unexpected usage of system calls or native libraries linked to your own software: Universal Profiling is able
+  to unwind stacktraces across user-space boundary into kernel-space
+* inspect the call stacks of the most CPU-intensive application, detecting hot code paths and scouting for optimization
+  opportunities
+* detect dead code, by searching for a library file name, a method/function file name and not hitting any results
+* find "deep" call stack, usually hinting areas where there are many indirections across classes or objects
+
 #### Functions
 
+The functions view presents an ordered list of functions that are most seen running on CPU by Universal Profiling.
+From this view, you can spot the functions that are running the most across your entire infrastructure, applying filters
+to drill down into individual components.
+
+![functions view](./img/functions-default-view.png)
+
 ### Filtering
+
+In every of the views mentioned above, the search bar accepts a filter in the Kibana Query
+Language ([KQL](https://www.elastic.co/guide/en/kibana/current/kuery-query.html)).
+
+Most notably, you may want to filter on:
+
+- `service.name`: the corresponding value of `project-id` hot-agent flag, logical group of host-agents deployed
+- `process.thread.name`: the process command, e.g. `python`, or `java`
+- `orchestrator.resource.name`: the name of the group of the containerized deployment as set by the orchestrator
+- `container.name`: the name of the single container instance, as set by the container engine
+- `host.name`: the single machine's hostname (useful for debugging issues of a single Virtual Machine)
 
 ### Resource constraints
 
