@@ -25,9 +25,9 @@ You need the following prerequisites:
   the `elastic` user)
 - a Linux machine with a terminal to run commands
 
-With the above points sorted out, you are ready to get started!
+With these sorted out, you are ready to get started!
 
-The following diagram summarize the steps we are going to detail below.
+The following diagram summarizes the steps we are going to describe below.
 
 ![user-diagram](./img/user-diagram.png)
 
@@ -119,10 +119,10 @@ If everything is working, you can deploy the host-agent across your fleet in the
 There is only one config knob that you can change: `project-id` (default value is `1`).
 
 The `-project-id` flag, or the `project-id` key in the host-agent configuration file, is a parameter to split
-profiling data into logical groups.
+profiling data into logical groups that you control.
 
-You are free to assign any non-zero, unsigned integer to a host-agent deployment you control: this will be helpful to
-slice profiling data in Kibana.
+You are free to assign any non-zero, unsigned integer to a host-agent deployment you control: this may be helpful
+when slicing profiling data in Kibana.
 You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
 i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
 
