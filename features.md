@@ -153,6 +153,31 @@ Most notably, you may want to filter on:
 - `host.name` or `host.ipstring`: the machine's hostname or IP address (useful for debugging issues on a single Virtual
   Machine)
 
+### Differential views
+
+The flamegraphs and functions views can be turned into differential views, comparing data from two distinct time ranges
+or across multiple dimensions.
+
+When switching to "Differential flamegraph" or "Differential TopN functions" from the tabs at the top, notice that you
+now see two separate search bars and datetime pickers.
+The left-most filters represent the data you want to use as baseline for comparison, while the right-most filters
+represents the data that will be compared against the baseline.
+
+Hitting refresh on each of the data filters will trigger a frequency comparison, that will highlight how the CPU usage
+has changed.
+
+In differential functions, note how the right-most column of functions has green or orange score calculator: they
+represent the relative difference of position as the heaviest CPU hitting functions.
+
+![differential view](./img/functions-diff-view.png)
+
+In differentials flamegraphs, the difference with the baseline is highlighted in form of color and hue: a more vivid
+green colored rectangle indicates that a frame has been seen in _less_ samples compared to the baseline, which means
+an improvement. In contrast, rectangles colored by a vivid red are a sign of more samples being recorded on CPU,
+therefore indicating a potential performance regression.
+
+![differential flamegraph](./img/flamegraph-diff-view.png)
+
 ### Resource constraints
 
 One of the key goals of Universal Profiling is to have net positive cost benefit for users: the cost of profiling and
