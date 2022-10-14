@@ -2,7 +2,7 @@
 
 ## Universal Profiling features
 
-Elastic Universal Profiling is a continuous profiling platform running on top of the Elastic stack.
+Elastic Universal Profiling is a continuous profiling tool running on top of the Elastic stack.
 
 For more details, see
 the [Elastic Universal Profiling product page](https://www.elastic.co/observability/ebpf-continuous-code-profiling)
@@ -17,9 +17,10 @@ Universal Profiling currently only supports CPU profiling (via stack sampling).
 From the landing page, you can get an overview of the entirety of your data, and slice and dice into more detailed
 sections of your fleet by using filtering queries in the search bar.
 You can apply both time-based filters and property filters, inspecting more narrow portions of data and drilling down
-into how much various parts of your infrastructure consume CPU usage over time.
+into how much various parts of your infrastructure consume CPU over time.
 
-See [filtering](TODO) for more details on how to slice data, and [differential views](TODO) to know how to compare
+See [filtering](#filtering) for more details on how to slice data, and [differential views](#differential-views) to understand how to
+compare
 two time ranges to detect performance improvements or regressions.
 
 #### Premise on debug symbols
@@ -27,7 +28,8 @@ two time ranges to detect performance improvements or regressions.
 Profiles' stacktrace may be either symbolized, showing the full source code's filename and line number, or partially
 symbolized, or not symbolized at all.
 
-Notice how unsymbolized frames _do not_ show a filename and line number, but a hexadecimal number or `<unsymbolized>`.
+Notice how unsymbolized frames _do not_ show a filename and line number, but a hexadecimal number such as `0x80d2f4`
+or `<unsymbolized>`.
 
 Adding symbols for unsymbolized frames is a manual operation for now, see
 [Adding symbols for native frames](./README.md#adding-symbols-for-native-frames).
@@ -52,7 +54,7 @@ Here is summary of the type of groupings in each view:
 
 * Containers: stacktraces grouped by container name discovered by the host-agent
 * Deployments: stacktraces grouped by deployment name set by the container orchestration (e.g. Kubernetes `ReplicaSet`,
-  `DaemonSet`, or `SatefulSet` name)
+  `DaemonSet`, or `StatefulSet` name)
 * Threads: stacktraces grouped by process' thread name
 * Hosts: stacktraces grouped by machine's hostname or IP
 * Traces: un-grouped stacktraces
@@ -66,10 +68,11 @@ Below the top graph, a list of smaller graphs show the individual trend-line for
 The percentage displayed in the top-right corner of every smaller graph is the _relative_ number of occurrences of
 every time over the total of samples in the group.
 
-The smaller graphs are ordered in decreasing order, from top to bottom, left to right.
-
 **Do not confuse the displayed percentage with percentage of CPU usage**: Universal Profiler is not meant to show
-absolute monitoring data, rather it allows to compare which software running in your infrastructure is the most expensive.
+absolute monitoring data, rather it allows to compare which software running in your infrastructure is the most
+expensive.
+
+The smaller graphs are ordered in decreasing order, from top to bottom, left to right.
 
 In the "Traces" tab, clicking on "Show more" in each of the smaller graphs will show the full
 stacktrace.
@@ -79,14 +82,14 @@ stacktrace.
 Some possible use cases for the stacktraces view:
 
 * discover which container, deployed across a multitude of machines, is the heaviest CPU hitter
-* discover how much relative overhead comes from third party software running on your machines
+* discover how much relative overhead comes from third-party software running on your machines
 * detect unexpected CPU spikes across threads, and drill down into a smaller time range to investigate further with a
   flamegraph
 
 #### Flamegraphs
 
 A flamegraph is a visualization technique that groups hierarchical data (stacktraces) into rectangles stacked onto
-or next to each other. The size of each rectangle represents the relative weight of a children compared to the parent.
+or next to each other. The size of each rectangle represents the relative weight of a child compared to the parent.
 
 Flamegraphs provide immediate feedback on what parts of the software should be searched first for optimization
 opportunities, highlighting the hottest code paths across your entire infrastructure.
@@ -95,9 +98,9 @@ opportunities, highlighting the hottest code paths across your entire infrastruc
 
 You can navigate a flamegraph on two axes:
 
-* Horizontally: every process that is sampled will have at least a box under the `root`
+* Horizontally: every process that is sampled will have at least a rectangle under the `root`
   frame. In Universal Profiling flamegraphs you will likely discover the existence of processes you don't control, but
-  that are eating significant portion of your CPU resources.
+  that are eating a significant portion of your CPU resources.
 * Vertically: traversing a process' call stack will allow to identify which parts of the process are executing most
   frequently. This allows pinpointing functions or methods that _should_ be negligible, and are instead found to be a
   big portion of your call sites.
@@ -143,24 +146,24 @@ Language ([KQL](https://www.elastic.co/guide/en/kibana/current/kuery-query.html)
 
 Most notably, you may want to filter on:
 
-- `service.name`: the corresponding value of `project-id` hot-agent flag, logical group of host-agents deployed
-- `process.thread.name`: the process command, e.g. `python`, or `java`
+- `service.name`: the corresponding value of `project-id` host-agent flag, logical group of host-agents deployed
+- `process.thread.name`: the process' thread name, e.g. `python`, `java`, or `kauditd`
 - `orchestrator.resource.name`: the name of the group of the containerized deployment as set by the orchestrator
 - `container.name`: the name of the single container instance, as set by the container engine
-- `host.name`: the single machine's hostname (useful for debugging issues of a single Virtual Machine)
+- `host.name` or `host.ipstring`: the machine's hostname or IP address (useful for debugging issues on a single Virtual
+  Machine)
 
 ### Resource constraints
 
 One of the key goals of Universal Profiling is to have net positive cost benefit for users: the cost of profiling and
 observing applications should not be higher than the savings produced by the optimizations.
 
-In this spirit, both the agent and storage are engineered to be as efficient as possible in terms of resources
-usage.
+In this spirit, both the host-agent and storage are engineered to use as little resources as possible.
 
 #### Elasticsearch storage
 
 Universal Profiling storage budget is predictable on a per-profiled-core basis: the data we generate at the fixed
-sampling frequency of 20 Hz, will be stored in Elasticsearch at the rate of 20 mega-bytes per core-day.
+sampling frequency of 20 Hz, will be stored in Elasticsearch at the rate of 20 MB per core per day.
 
 #### Host-agent CPU and memory
 

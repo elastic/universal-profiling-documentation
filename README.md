@@ -132,10 +132,13 @@ This is good for testing environments, but for production we recommend to use im
 
 The host-agent versioning scheme is **not aligned with the Elastic stack version scheme**.
 
-The OS packages downloaded from `relases.prodfiler.com` have a version in their file name.
+The OS packages downloaded from `releases.prodfiler.com` have a version in their file name.
 
 For container images, you can find a list of versions in the
 [Elastic container library repository](https://container-library.elastic.co/r/observability/profiling-agent).
+
+For Kubernetes deployments, the Helm chart version is already used to configure the same container image, unless
+overwritten with the `version` parameter in values.
 
 #### Adding symbols for native frames
 
