@@ -1,11 +1,13 @@
-
 <center><img src="https://elastic.github.io/universal-profiling-documentation/img/logo.png"  width="400" height="400"></center>
 
 Welcome to the **private beta** documentation for Universal Profiling.
 
-The purpose of this documentation is to assist you in configuring and using Universal Profiling. In return, we would appreciate your feedback on your experience of the product, and any other profiling  pain-points you may have.
+The purpose of this documentation is to assist you in configuring and using Universal Profiling. In return, we would
+appreciate your feedback on your experience of the product, and any other profiling pain-points you may have.
 
 Continue to the next section to get started with Universal Profiling.
+
+If you are already done with the initial setup, proceed to explore [Universal Profiling features](./features.md).
 
 ## Getting started with Universal Profiling
 
@@ -14,7 +16,7 @@ Eventually, it may also be available in self-managed or open-source distribution
 
 ### Elastic Cloud
 
-Enabling Universal Profiling on a deployment requires some manual actions for now but many of them will be automated in upcoming releases.
+Enabling Universal Profiling on a deployment requires some manual actions, most of which will be automated in upcoming releases.
 
 You need the following prerequisites:
 
@@ -62,7 +64,8 @@ Follow these steps to enable the Universal Profiling app in Kibana:
 7. If you encounter an error during the configuration change, [submit a support request](#submit-a-support-request)
    to have the line from step four added in Kibana user settings.
 
-Once Kibana has the Universal Profiling app enabled, it's visible under `Observability` in the menu on the left-hand side.
+Once Kibana has the Universal Profiling app enabled, it's visible under `Observability` in the menu on the left-hand
+side.
 You can now go ahead and configure data ingestion:
 
 1. Fetch the Cloud ID of your deployment from the Cloud console.
@@ -76,7 +79,7 @@ You can now go ahead and configure data ingestion:
 1. Use the Cloud ID and the `superuser` Elasticsearch credentials to set up Universal Profiling in your deployment.
    Replace the placeholders in `<>` with the proper values for your deployment.
    ```
-   ./elastic-profiling setup --reset --cloud-id=<CLOUD_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
+   ./elastic-profiling setup cloud --reset --cloud-id=<CLOUD_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
 1. Confirm that this is the first time setting up Universal Profiling in the terminal prompt.
    If Universal Profiling has already been installed, confirm with your cluster administrator that you are willing to
@@ -84,14 +87,15 @@ You can now go ahead and configure data ingestion:
 
 #### Installing the host-agent
 
-The host-agent is the component that is profiling your fleet and needs to be installed and configured on every machine 
+The host-agent is the component that is profiling your fleet and needs to be installed and configured on every machine
 that you want to profile. The following instructions guide you to do a basic setup of host-agent on your Linux machine.
 If everything is working, you can deploy the host-agent across your fleet in the last step.
 
 1. Fetch the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
 1. Copy again the Cloud ID of your deployment as done in the previous section.
-1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
+1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various deployment
+   methods.
    You can list all available package formats by running
    ```bash
    ./elastic-profiling help config
@@ -125,12 +129,15 @@ i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-producti
 Note that the printed configuration uses a `stable` version.
 This is good for testing environments, but for production we recommend to use immutable, versioned artifacts.
 
-The host-agent versioning scheme is **not aligned with the Elastic stack version**.
+The host-agent versioning scheme is **not aligned with the Elastic stack version scheme**.
 
-The OS packages downloaded from `relases.prodfiler.com` have a version in their file name.
+The OS packages downloaded from `releases.prodfiler.com` have a version in their file name.
 
 For container images, you can find a list of versions in the
 [Elastic container library repository](https://container-library.elastic.co/r/observability/profiling-agent).
+
+For Kubernetes deployments, the Helm chart version is already used to configure the same container image, unless
+overwritten with the `version` parameter in values.
 
 #### Adding symbols for native frames
 
