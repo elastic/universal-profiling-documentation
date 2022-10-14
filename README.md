@@ -2,8 +2,9 @@
 
 Welcome to the **private beta** documentation for Universal Profiling.
 
-The purpose of this documentation is to assist you in configuring and using Universal Profiling. In return, we would
-appreciate your feedback on your experience of the product, and any other profiling pain-points you may have.
+This documentation will help you configure and use Universal Profiling. We would appreciate feedback on your experience
+with this product and any other profiling pain points you may have. See the **[Send Feedback](#send-feedback)** section
+at the end of this documentation for more information.
 
 Continue to the next section to get started with Universal Profiling.
 
@@ -11,31 +12,29 @@ If you are already done with the initial setup, proceed to explore [Universal Pr
 
 ## Getting started with Universal Profiling
 
-At the moment, Universal Profiling is **available only on [Elastic Cloud](http://cloud.elastic.co)**.
-Eventually, it may also be available in self-managed or open-source distributions of the Elastic stack.
+At the moment, Universal Profiling is **only available on [Elastic Cloud](http://cloud.elastic.co)**.
+Eventually, it may also be available on self-managed or open-source distributions of the Elastic stack.
 
-### Elastic Cloud
+Enabling Universal Profiling on a deployment currently requires some manual actions. Many of these actions will be
+automated in upcoming releases.
 
-Enabling Universal Profiling on a deployment requires some manual actions, most of which will be automated in upcoming releases.
+### Prerequisites
 
-You need the following prerequisites:
+Before setting up Universal Profiling, check the following prerequisites:
 
-- a Cloud account with a Platinum subscription
-- a deployment at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one)
-- the Integrations Server must be enabled in the deployment
+- a deployment at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one).
+- the Integrations Server must be enabled in the deployment.
 - credentials (either an API key or username/password) for the `superuser` Elasticsearch role (typically,
-  the `elastic` user)
-- a Linux machine with a terminal to run commands
+  the `elastic` user).
+- a Linux machine with a terminal to run commands.
 
-With these sorted out, you are ready to get started!
+### Deployment configuration example
 
-#### Deployment reference
+Before creating a new cluster or upgrading an existing one, review the suggested configuration tier for each Elastic
+stack component.
 
-Before creating a new cluster, or upgrading an existing one to 8.5, please review the suggested configuration tier
-for each Elastic stack component.
-
-The reference deployment configuration in the table was tested to support profiling data from a fleet up to 500 hosts,
-each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
+The deployment configuration example in the following table was tested to support profiling data from a fleet of up to
+500 hosts, each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
 
 | Component           | Size per zone (memory) | Zones | 
 |---------------------|------------------------|-------|
@@ -43,74 +42,75 @@ each with 8 or 16 CPU cores, for a total of roughly 6000 cores.
 | Kibana              | 8 GB                   | 1     |
 | Integrations Server | 8 GB                   | 1     |
 
-Even if you have a smaller fleet to be profiled, for an optimal user experience we recommend to configure at minimum
-2 zones for Elasticsearch, 4 GB of memory for Integrations Server as well as Kibana.
+Even if you're profiling a smaller fleet, we recommend configuring at least 2 zones for Elasticsearch and 4 GB of memory
+each for the Integrations Server and Kibana.
 
-#### Setting up Universal Profiling on a Cloud deployment
+### Setting up Universal Profiling on a Cloud deployment
 
 Follow these steps to enable the Universal Profiling app in Kibana:
 
-1. Login to https://cloud.elastic.co and locate your deployment.
+1. Log in to [Elastic Cloud](https://cloud.elastic.co) and locate your deployment.
 2. Edit the deployment.
-3. Scroll down to the Kibana section, and click on "Edit user settings".
+3. Scroll down to the Kibana section, and click **Edit user settings**.
    ![edit Kibana user settings](./img/kibana-edit-user-settings.png)
 4. Add this line in the user settings:
    ```yaml
    xpack.profiling.enabled: true
    ```
    ![edit Kibana user settings](./img/kibana-edit-user-settings-popup.png)
-5. Go back and scroll to the bottom of the page.
-6. Save the settings by clicking on `Save`.
+5. Click **Back** at the bottom of the **User Settings** pane.
+6. Scroll to the bottom of the **Edit** page, and click **Save** to save your settings.
 7. If you encounter an error during the configuration change, [submit a support request](#submit-a-support-request)
-   to have the line from step four added in Kibana user settings.
+   to have the line from step four added to your Kibana user settings.
 
-Once Kibana has the Universal Profiling app enabled, it's visible under `Observability` in the menu on the left-hand
-side.
-You can now go ahead and configure data ingestion:
+Once Kibana has the Universal Profiling app enabled, it's located under **Observability** in the navigation menu.
 
-1. Fetch the Cloud ID of your deployment from the Cloud console.
+Now, follow these steps to configure data ingestion:
+
+1. Copy your deployment's Cloud ID from the Cloud console.
    ![cloud ID](./img/cloud-id.png)
-1. On your Linux machine, open a terminal to execute the next steps.
+1. On your Linux machine, open a terminal to execute the following steps.
 1. Download and extract the `elastic-profiling` CLI:
    ```bash
    wget -O- https://releases.prodfiler.com/stable/elastic-profiling.tgz | tar xz
    chmod +x elastic-profiling
    ```
 1. Use the Cloud ID and the `superuser` Elasticsearch credentials to set up Universal Profiling in your deployment.
-   Replace the placeholders in `<>` with the proper values for your deployment.
+   In the following example, replace the placeholders in `<>` with the proper values for your deployment.
    ```
    ./elastic-profiling setup cloud --reset --cloud-id=<CLOUD_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
 1. Confirm that this is the first time setting up Universal Profiling in the terminal prompt.
-   If Universal Profiling has already been installed, confirm with your cluster administrator that you are willing to
-   erase all existing profiling data.
+   If Universal Profiling has already been installed, confirm with your cluster administrator that it's ok to erase all
+   existing profiling data.
 
-#### Installing the host-agent
+### Installing the host-agent
 
-The host-agent is the component that is profiling your fleet and needs to be installed and configured on every machine
-that you want to profile. The following instructions guide you to do a basic setup of host-agent on your Linux machine.
+The host-agent is the component that profiles your fleet and needs to be installed and configured on every machine that
+you want to profile. The following instructions guide you through the basic setup of a host-agent on your Linux machine.
+
 If everything is working, you can deploy the host-agent across your fleet in the last step.
 
-1. Fetch the APM Cluster ID of your deployment from the Cloud console.
+1. Copy the APM Cluster ID of your deployment from the Cloud console.
    ![apm cluster ID](./img/apm-cluster-id.png)
-1. Copy again the Cloud ID of your deployment as done in the previous section.
-1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various deployment
-   methods.
-   You can list all available package formats by running
+1. Copy the Cloud ID of your deployment from the Cloud console like in the first step of the previous section.
+1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
+   You can list all available package formats by running:
    ```bash
    ./elastic-profiling help config
    ```
+
 1. Print the `binary` configuration to test it on your current Linux machine:
    ```bash
    ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --cloud-id=<CLOUD_ID> \
      --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
    ```
-1. Run the host-agent with the provided steps, testing your Universal Profiling deployment is working as expected.
-   The host-agent will print out logs that will notify if the connection to Elastic Cloud is not working.
-   In such case, see [troubleshooting and support](#troubleshooting-and-support).
+1. Run the host-agent with the provided steps, testing that your Universal Profiling deployment is working as expected.
+   The host-agent will print out logs that will notify you if the connection to Elastic Cloud is not working.
+   In this case, see [troubleshooting and support](#troubleshooting-and-support).
 1. After a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
-   Move to the `Threads` tab in Observability > Universal Profiling > Stacktraces. You should see a graph and a list of
-   processes.
+   Move to the **Threads** tab in **Observability > Universal Profiling > Stacktraces**. You should see a graph and a
+   list of processes.
 1. You can now print more configurations to deploy the host-agents on your fleet.
 
 **Notes on the host-agent configuration**
@@ -121,8 +121,9 @@ There is only one config knob that you can change: `project-id` (default value i
 The `-project-id` flag, or the `project-id` key in the host-agent configuration file, is a parameter to split
 profiling data into logical groups that you control.
 
-You are free to assign any non-zero, unsigned integer to a host-agent deployment you control: this may be helpful
-when slicing profiling data in Kibana.
+You are free to assign any non-zero, unsigned integer to a host-agent deployment you control. This is helpful when
+slicing profiling data in Kibana.
+
 You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
 i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
 
@@ -139,15 +140,15 @@ For container images, you can find a list of versions in the
 For Kubernetes deployments, the Helm chart version is already used to configure the same container image, unless
 overwritten with the `version` parameter in values.
 
-#### Adding symbols for native frames
+### Adding symbols for native frames
 
 TODO
 
-#### Troubleshooting and support
+### Troubleshooting and support
 
-We briefly mentioned earlier that you can spot errors in the host-agent logs.
+We mentioned earlier that you can spot errors in the host-agent logs.
 
-First off, how does a _healthy_ host-agent output look like? Like this
+The following is an example of a _healthy_ host-agent output:
 
 ```
 time="..." level=info msg="Starting Prodfiler Host Agent v2.4.0 (revision develop-5cce978a, build timestamp 12345678910)"
@@ -168,25 +169,24 @@ time="..." level=info msg="Attached tracer program"
 time="..." level=info msg="Attached sched monitor"
 ```
 
-In essence, you can validate a host-agent deployment is working as intended, if the following command has an empty
-output:
+You can confirm that a host-agent deployment is working if you run the following command and it has an empty output:
 
 ```bash
 head host-agent.log -n 15 | grep "level=error"
 ```
 
-If the output of the above command is not empty and there are error level logs, we list below some possible causes of
-malfunction:
+If the output of the previous command contains error level logs, below are some possible causes:
 
-1. The host-agent is running on an unsupported version of Linux kernel, or it can't perform its operations because of
-   missing kernel features.
+1. The host-agent is running on an unsupported version of the Linux kernel, or it can't perform its operations because
+   of missing kernel features.
 
    In case of an outdated kernel version, this message will be logged:
    ```text
    Host Agent requires kernel version 4.15 or newer but got 3.10.0
    ```
 
-   In case of eBPF features not being available in the kernel, host-agent will fail starting up, and logs will contain
+   In case of eBPF features not being available in the kernel, the host-agent will fail starting up, and the logs will
+   contain:
    ```text
    Failed to probe eBPF syscall
    ```
@@ -210,27 +210,27 @@ malfunction:
    rpc error: code = Unauthenticated desc = authentication failed
    ```
 
-If you are unable to find a solution to the host-agent failure, you can raise a support request,
+If you are unable to find a solution to the host-agent failure, you can raise a support request
 indicating `Universal Profiling` and `host-agent` as source of the problem.
 
-##### Enabling verbose logging in host-agent
+#### Enabling verbose logging in host-agent
 
-During the support process, you may be asked to provide debug logs from one of the host-agent installations from
-your deployment.
+During the support process, you may be asked to provide debug logs from one of the host-agent installations from your
+deployment.
 
-**We recommend to enable debug logs only on a single instance of host-agent**, rather than an entire deployment, because
+**We recommend only enabling debug logs on a single instance of host-agent**, rather than an entire deployment because
 of the amount of logs produced.
 
 To enable debug logs, add the `-verbose` command-line flag or the `verbose true` setting in the configuration file.
 
-##### Submit a support request
+#### Submit a support request
 
 Reach the [support request page](https://cloud.elastic.co/support) in the Cloud console.
 
 Depending on what type of problem you faced during the setup or operation of Universal Profiling, please specify in the
-request if the problem is in the host-agent, or the Kibana app.
+request if the problem is in the host-agent or the Kibana app.
 
-##### Send feedback
+#### Send feedback
 
-If troubleshooting and support are not working for you, or you have any other feedback that you want to share about
-the product, send the Profiling team an email to `profiling-feedback@elastic.co`.
+If troubleshooting and support are not working for you, or you have any other feedback that you want to share about the
+product, send the Profiling team an email at `profiling-feedback@elastic.co`.
