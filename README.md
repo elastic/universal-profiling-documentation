@@ -16,8 +16,7 @@ Eventually, it may also be available in self-managed or open-source distribution
 
 ### Elastic Cloud
 
-Enabling Universal Profiling on a deployment requires some manual actions, but many of them will be automated in
-upcoming releases.
+Enabling Universal Profiling on a deployment requires some manual actions, most of which will be automated in upcoming releases.
 
 You need the following prerequisites:
 

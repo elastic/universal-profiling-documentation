@@ -17,7 +17,7 @@ Universal Profiling currently only supports CPU profiling (via stack sampling).
 From the landing page, you can get an overview of the entirety of your data, and slice and dice into more detailed
 sections of your fleet by using filtering queries in the search bar.
 You can apply both time-based filters and property filters, inspecting more narrow portions of data and drilling down
-into how much various parts of your infrastructure consume CPU over time.
+into how much CPU various parts of your infrastructure consume over time.
 
 See [filtering](#filtering) for more details on how to slice data, and [differential views](#differential-views) to understand how to
 compare
@@ -50,7 +50,7 @@ in the threads, hosts and traces view.
 
 ![stacktraces view](./img/stacktraces-default-view.png)
 
-Here is summary of the type of groupings in each view:
+Here is a summary of the type of groupings in each view:
 
 * Containers: stacktraces grouped by container name discovered by the host-agent
 * Deployments: stacktraces grouped by deployment name set by the container orchestration (e.g. Kubernetes `ReplicaSet`,
@@ -69,8 +69,7 @@ The percentage displayed in the top-right corner of every smaller graph is the _
 every time over the total of samples in the group.
 
 **Do not confuse the displayed percentage with percentage of CPU usage**: Universal Profiler is not meant to show
-absolute monitoring data, rather it allows to compare which software running in your infrastructure is the most
-expensive.
+absolute monitoring data, rather it allows for relative comparisons between software running in your infrastructure (e.g. which is the most expensive?)
 
 The smaller graphs are ordered in decreasing order, from top to bottom, left to right.
 
@@ -91,7 +90,7 @@ Some possible use cases for the stacktraces view:
 A flamegraph is a visualization technique that groups hierarchical data (stacktraces) into rectangles stacked onto
 or next to each other. The size of each rectangle represents the relative weight of a child compared to the parent.
 
-Flamegraphs provide immediate feedback on what parts of the software should be searched first for optimization
+Flamegraphs provide immediate feedback on which parts of the software should be searched first for optimization
 opportunities, highlighting the hottest code paths across your entire infrastructure.
 
 ![flamegraph view](./img/flamegraph-default-view.png)
@@ -111,10 +110,10 @@ You can zoom in and out of a subset of stacktraces, by clicking on individual fr
 view.
 
 The summary square in the bottom-left corner of the graph lets you shift the visible area of the graph.
-Note how the position of summary square is adjusted when you drag flamegraph, and vice-versa: moving the summary square
+Note how the position of the summary square is adjusted when you drag the flamegraph, and vice-versa: moving the summary square
 will reflect the visible area in the bigger panel.
 
-Enabling the "Show information window" on the right will display a list of entries in a panel on the right.
+Enabling "Show information window" on the right will display a list of entries in a panel on the right.
 Clicking on each rectangle in the flamegraph will highlight the frame's detail in the right panel.
 
 ![flamegraph frame details](./img/flamegraph-detailed-view.png)
@@ -128,12 +127,11 @@ Common use cases for flamegraphs:
   to unwind stacktraces across user-space boundary into kernel-space
 * inspect the call stacks of the most CPU-intensive application, detecting hot code paths and scouting for optimization
   opportunities
-* detect dead code, by searching for a library file name, a method/function file name and not hitting any results
 * find "deep" call stack, usually hinting areas where there are many indirections across classes or objects
 
 #### Functions
 
-The functions view presents an ordered list of functions that are most seen running on CPU by Universal Profiling.
+The functions view presents an ordered list of functions that are sampled the most by Universal Profiling.
 From this view, you can spot the functions that are running the most across your entire infrastructure, applying filters
 to drill down into individual components.
 
@@ -141,12 +139,12 @@ to drill down into individual components.
 
 ### Filtering
 
-In every of the views mentioned above, the search bar accepts a filter in the Kibana Query
+In every view mentioned above, the search bar accepts a filter in the Kibana Query
 Language ([KQL](https://www.elastic.co/guide/en/kibana/current/kuery-query.html)).
 
 Most notably, you may want to filter on:
 
-- `service.name`: the corresponding value of `project-id` host-agent flag, logical group of host-agents deployed
+- `service.name`: the corresponding value of `project-id` host-agent flag, logical group of deployed host-agents
 - `process.thread.name`: the process' thread name, e.g. `python`, `java`, or `kauditd`
 - `orchestrator.resource.name`: the name of the group of the containerized deployment as set by the orchestrator
 - `container.name`: the name of the single container instance, as set by the container engine
@@ -171,7 +169,7 @@ represent the relative difference of position as the heaviest CPU hitting functi
 
 ![differential view](./img/functions-diff-view.png)
 
-In differentials flamegraphs, the difference with the baseline is highlighted in form of color and hue: a more vivid
+In differentials flamegraphs, the difference with the baseline is highlighted with color and hue: a more vivid
 green colored rectangle indicates that a frame has been seen in _less_ samples compared to the baseline, which means
 an improvement. In contrast, rectangles colored by a vivid red are a sign of more samples being recorded on CPU,
 therefore indicating a potential performance regression.
