@@ -1,4 +1,6 @@
-<center><img src="https://elastic.github.io/universal-profiling-documentation/img/logo.png"  width="400" height="400"></center>
+<p align="center">
+  <img src="https://github.com/elastic/universal-profiling-documentation/raw/65188a30b6e7877298a7b4f67fc1bcef3c3324ed/img/logo.png" height="400">
+</p>
 
 Welcome to the **private beta** documentation for Universal Profiling.
 
