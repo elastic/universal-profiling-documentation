@@ -10,9 +10,9 @@ at the end of this documentation for more information.
 
 Continue to the next section to get started with Universal Profiling.
 
-If you are already done with the initial setup, proceed to explore [Universal Profiling features](./features.md).
+If you've completed the initial setup, continue to [Universal Profiling features](./features.md).
 
-## Getting started with Universal Profiling
+## Get started with Universal Profiling
 
 At the moment, Universal Profiling is **only available on [Elastic Cloud](http://cloud.elastic.co)**.
 Eventually, it may also be available on self-managed or open-source distributions of the Elastic stack.
@@ -52,24 +52,25 @@ each for the Integrations Server and Kibana.
 Follow these steps to enable the Universal Profiling app in Kibana:
 
 1. Log in to [Elastic Cloud](https://cloud.elastic.co) and locate your deployment.
-2. Edit the deployment.
-3. Scroll down to the Kibana section, and click **Edit user settings**.
+2. Click the **Manage deployment** icon next to your deployment.
+3. Click **Edit** in the navigation menu.
+4. Scroll down to the Kibana section, and click **Edit user settings**.
    ![edit Kibana user settings](./img/kibana-edit-user-settings.png)
-4. Add this line in the user settings:
+5. Add this line to the user settings:
    ```yaml
    xpack.profiling.enabled: true
    ```
    ![edit Kibana user settings](./img/kibana-edit-user-settings-popup.png)
-5. Click **Back** at the bottom of the **User Settings** pane.
-6. Scroll to the bottom of the **Edit** page, and click **Save** to save your settings.
-7. If you encounter an error during the configuration change, [submit a support request](#submit-a-support-request)
+6. Click **Back** at the bottom of the **User settings** pane.
+7. Scroll to the bottom of the **Edit** page, and click **Save** to save your settings.
+8. If you encounter an error when updating your configuration, [submit a support request](#submit-a-support-request)
    to have the line from step four added to your Kibana user settings.
 
 Once Kibana has the Universal Profiling app enabled, it's located under **Observability** in the navigation menu.
 
-Now, follow these steps to configure data ingestion:
+Next, follow these steps to configure data ingestion:
 
-1. Copy your deployment's Cloud ID from the Cloud console.
+1. Copy your deployment's Cloud ID from the deployment overview page.
    ![cloud ID](./img/cloud-id.png)
 1. On your Linux machine, open a terminal to execute the following steps.
 1. Download and extract the `elastic-profiling` CLI:
@@ -91,11 +92,11 @@ Now, follow these steps to configure data ingestion:
 The host-agent is the component that profiles your fleet and needs to be installed and configured on every machine that
 you want to profile. The following instructions guide you through the basic setup of a host-agent on your Linux machine.
 
-If everything is working, you can deploy the host-agent across your fleet in the last step.
+If everything is working correctly, you can deploy the host-agent across your fleet in the final step of the following instructions:
 
-1. Copy the APM Cluster ID of your deployment from the Cloud console.
+1. Copy your deployment's APM Cluster ID from the deployment overview page.
    ![apm cluster ID](./img/apm-cluster-id.png)
-1. Copy the Cloud ID of your deployment from the Cloud console like in the first step of the previous section.
+1. Copy your deployment's Cloud ID from the deployment overview page (like in the first step of the previous section).
 1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
    You can list all available package formats by running:
    ```bash
@@ -111,7 +112,7 @@ If everything is working, you can deploy the host-agent across your fleet in the
    The host-agent will print out logs that will notify you if the connection to Elastic Cloud is not working.
    In this case, see [troubleshooting and support](#troubleshooting-and-support).
 1. After a few minutes, open Kibana and confirm you can see stacktraces data coming from your host.
-   Move to the **Threads** tab in **Observability > Universal Profiling > Stacktraces**. You should see a graph and a
+   Navigate to the **Threads** tab in **Observability > Universal Profiling > Stacktraces**. You should see a graph and a
    list of processes.
 1. You can now print more configurations to deploy the host-agents on your fleet.
 
@@ -177,9 +178,9 @@ You can confirm that a host-agent deployment is working if you run the following
 head host-agent.log -n 15 | grep "level=error"
 ```
 
-If the output of the previous command contains error level logs, below are some possible causes:
+If the output of the previous command contains error level logs, the following are possible causes:
 
-1. The host-agent is running on an unsupported version of the Linux kernel, or it can't perform its operations because
+- The host-agent is running on an unsupported version of the Linux kernel, or it can't perform its operations because
    of missing kernel features.
 
    In case of an outdated kernel version, this message will be logged:
@@ -197,8 +198,8 @@ If the output of the previous command contains error level logs, below are some 
    Failed to probe tracepoint
    ```
 
-1. The host-agent is not able to connect to Elastic Cloud.
-   In this case you should see a message like the following:
+- The host-agent is not able to connect to Elastic Cloud.
+   In this case, you should see a message like the following:
    ```text
    Failed to setup gRPC connection (retrying...): context deadline exceeded
    ```
@@ -206,7 +207,7 @@ If the output of the previous command contains error level logs, below are some 
    Verify the `collection-agent` configuration value is set and is equal to what was printed
    by `elastic-profiling config`.
 
-1. The secret token is not valid, or it has been changed.
+- The secret token is not valid, or it has been changed.
    In this case, the host-agent will shut down, logging an error message like the following:
    ```text
    rpc error: code = Unauthenticated desc = authentication failed
