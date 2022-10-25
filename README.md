@@ -73,7 +73,7 @@ Now, follow these steps to configure data ingestion:
 1. Download and extract the `elastic-profiling` CLI by replacing the `<PROVIDED_URL>` placeholder in the following example with the URL you received in your private beta onboarding call:
    ```bash
    wget -O- <PROVIDED_URL> | tar xz
-   chmod +x
+   chmod +x elastic-profiling
    ```
   If you haven't signed up for the private beta, sign up [here](https://docs.google.com/forms/d/e/1FAIpQLSd-SWVgvhO7Z_jAfaV9_bFGa0dUZPuX0JORzPGS8SDP7G-dVQ/viewform).
   
