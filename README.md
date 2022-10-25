@@ -73,11 +73,13 @@ Next, follow these steps to configure data ingestion:
 1. Copy your deployment's Cloud ID from the deployment overview page.
    ![cloud ID](./img/cloud-id.png)
 1. On your Linux machine, open a terminal to execute the following steps.
-1. Download and extract the `elastic-profiling` CLI:
+1. Download and extract the `elastic-profiling` CLI by replacing the `<PROVIDED_URL>` placeholder in the following example with the URL you received in your private beta onboarding call:
    ```bash
-   wget -O- https://releases.prodfiler.com/stable/elastic-profiling.tgz | tar xz
+   wget -O- <PROVIDED_URL> | tar xz
    chmod +x elastic-profiling
    ```
+    If you haven't signed up for the private beta, sign up [here](https://docs.google.com/forms/d/e/1FAIpQLSd-SWVgvhO7Z_jAfaV9_bFGa0dUZPuX0JORzPGS8SDP7G-dVQ/viewform).
+  
 1. Use the Cloud ID and the `superuser` Elasticsearch credentials to set up Universal Profiling in your deployment.
    In the following example, replace the placeholders in `<>` with the proper values for your deployment.
    ```
