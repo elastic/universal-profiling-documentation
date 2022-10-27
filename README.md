@@ -206,17 +206,6 @@ rm ./my-app
 > the executable passed via the `-e` argument is used to calculate the file hash that
 > associates stack traces with their symbols and stripping the binary later will change that hash.
 
-#### Native symbolization limitations
-
-In the current beta release of Elastic Universal Profiling, native symbolization is still limited
-in a few important ways:
-
-- No virtual frames for inline functions
-- No symbols for leaf frames (top-most frame in a trace)
-- No automatic insertion of debug symbols for OS packages
-
-We're aiming that these limitations be improved on and eventually lifted in later versions.
-
 #### Linux distribution packages
 
 For Debian, Ubuntu, Fedora and Arch Linux, the `elastic-profiling` tool supports pushing symbols
@@ -250,6 +239,17 @@ Note that debuginfod servers for many distributions tend to be rather unreliable
 ends up printing `No debug info found for executable, skipping.` for all executables in a
 package, this is likely the reason. This is more likely to take place if you're on a faster
 moving release-channel of your distribution (e.g. Debian Testing).
+
+#### Native symbolization limitations
+
+In the current beta release of Elastic Universal Profiling, native symbolization is still limited
+in a few important ways:
+
+- No virtual frames for inline functions
+- No symbols for leaf frames (top-most frame in a trace)
+- No automatic insertion of debug symbols for OS packages
+
+We're aiming that these limitations be improved on and eventually lifted in later versions.
 
 ### Troubleshooting and support
 
