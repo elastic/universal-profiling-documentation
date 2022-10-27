@@ -164,7 +164,7 @@ same authentication parameters as the `config` command discussed in previous sec
 
 These four parameters are referred to as `<auth args>` in the following sub-sections.
 
-#### Go Applications
+#### Go applications
 
 The meta-information present in Go binaries allows them to be symbolized even if they were stripped.
 No additional parameters need to be passed during the build. To push symbols for a Go binary, simply 
@@ -174,7 +174,7 @@ invoke the `elastic-profiling` tool like this:
 ./elastic-profiling push-symbols executable <auth args> -e ./my-go-app 
 ```
 
-#### C, C++ and Rust Applications
+#### C, C++ and Rust applications
 
 C/C++ applications must be built with debug symbols (`-g`) for symbolization to work. Rust applications
 must be built with [`debug = 1`][cargo-debug] (or higher). The debug info doesn't have to be deployed to 
