@@ -100,6 +100,9 @@ If everything is working correctly, you can deploy the host-agent across your fl
    ![apm cluster ID](./img/apm-cluster-id.png)
 1. Copy your deployment's Cloud ID from the deployment overview page (like in the first step of the previous section).
 1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
+   The default package format is binary but there are also instructions for DEB, RPM, Docker and Kubernetes. The DEB and
+   RPM package formats contain systemd service definitions that will ensure the host-agent stays running as a service.
+
    You can list all available package formats by running:
    ```bash
    ./elastic-profiling help config
