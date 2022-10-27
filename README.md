@@ -150,7 +150,106 @@ overwritten with the `version` parameter in values.
 
 ### Adding symbols for native frames
 
-TODO
+To see function names and line numbers in traces of applications written in programming languages that 
+compile to native code (C, C++, Rust, Go, ...), the user must first push symbols to the cluster. This
+is done using the `elastic-profiling push-symbols` command. All variants of this command require the
+same authentication parameters as the `config` command discussed in previous sections of this document:
+
+```
+   --apm-cluster-id=<cluster id>
+   --cloud-id=<cloud id>
+   --es-user=<elasticsearch user>
+   --es-password=<elasticsearch password>
+```
+
+These four parameters are referred to as `<auth args>` in the following sub-sections.
+
+#### Go applications
+
+The meta-information present in Go binaries allows them to be symbolized even if they were stripped.
+No additional parameters need to be passed during the build. To push symbols for a Go binary, simply 
+invoke the `elastic-profiling` tool like this:
+
+```
+./elastic-profiling push-symbols executable <auth args> -e ./my-go-app 
+```
+
+#### C, C++ and Rust applications
+
+C/C++ applications must be built with debug symbols (`-g`) for symbolization to work. Rust applications
+must be built with [`debug = 1`][cargo-debug] (or higher). The debug info doesn't have to be deployed to 
+production, but needs to be present temporarily to push them to the Elastic cluster. 
+
+[cargo-debug]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
+
+If you don't mind deploying your applications with debug symbols, you can simply do:
+
+```
+./elastic-profiling push-symbols executable <auth args> -e ./my-c-app 
+```
+
+If you don't want debug symbols in production, simply copy the executable and strip the copy.
+You can then use the `-d` argument to instruct the tool to read the symbols from the original
+unstripped binary while still calculating the file hash from the final stripped binary. After
+the symbols have been pushed, the unstripped binary can be removed.
+
+```
+cp ./my-app ./my-stripped-app
+strip ./my-stripped-app
+./elastic-profiling push-symbols executable <auth args> -e ./my-stripped-app -d ./my-app
+rm ./my-app
+```
+
+> **Warning**
+>
+> Simply pushing debug information and then stripping the binary later **will not work**:
+> the executable passed via the `-e` argument is used to calculate the file hash that
+> associates stack traces with their symbols and stripping the binary later will change that hash.
+
+#### Linux distribution packages
+
+For Debian, Ubuntu, Fedora and Arch Linux, the `elastic-profiling` tool supports pushing symbols
+for an entire package at once. The required debug symbols are automatically retrieved from
+the distribution's [debuginfod] server.
+
+[debuginfod]: https://wiki.debian.org/Debuginfod
+
+For this to work, please make sure that the debuginfod client is installed on your machine.
+
+| Distro | Install command                               |
+|--------|-----------------------------------------------|
+| Debian | `sudo apt install debuginfod`                 |
+| Ubuntu | `sudo apt install debuginfod`                 |
+| Fedora | `sudo dnf install elfutils-debuginfod-client` |
+| Arch   | `sudo pacman -S debuginfod`                   |
+
+Then, invoke `elastic-profiling` as follows:
+
+```
+./elastic-profiling push-symbols package <auth args> -p package-name
+```
+
+For example, to push symbols for libc on Debian:
+
+```
+./elastic-profiling push-symbols package <auth args> -p libc6
+```
+
+Note that debuginfod servers for many distributions tend to be rather unreliable: if the tool
+ends up printing `No debug info found for executable, skipping.` for all executables in a
+package, this is likely the reason. This is more likely to take place if you're on a faster
+moving release-channel of your distribution (e.g. Debian Testing).
+
+#### Native symbolization limitations
+
+In the current beta release of Elastic Universal Profiling, native symbolization is still limited
+in a few important ways:
+
+- No virtual frames for inline functions
+- No symbols for leaf frames (top-most frame in a trace)
+- No automatic insertion of debug symbols for OS packages
+
+We're aiming that these limitations be improved on and eventually lifted in later versions.
 
 ### Troubleshooting and support
 
