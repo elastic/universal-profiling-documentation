@@ -203,8 +203,8 @@ rm ./my-app
 > **Warning**
 >
 > Simply pushing debug information and then stripping the binary later **will not work**:
-> the executable passed via the `-e` argument is used to calculate the file hash that is used to
-> associate stack traces with their symbols and stripping the binary later will change that hash.
+> the executable passed via the `-e` argument is used to calculate the file hash that
+> associates stack traces with their symbols and stripping the binary later will change that hash.
 
 #### Native symbolization limitations
 
@@ -215,12 +215,12 @@ in a few important ways:
 - No symbols for leaf frames (top-most frame in a trace)
 - No automatic insertion of debug symbols for OS packages
 
-These limitations will likely be improved on and eventually lifted in later versions.
+We're aiming that these limitations be improved on and eventually lifted in later versions.
 
 ##### Linux distribution packages
 
 For Debian, Ubuntu, Fedora and Arch Linux, the `elastic-profiling` tool supports pushing symbols
-of an entire package at once. The required debug symbols are automatically retrieved from
+for an entire package at once. The required debug symbols are automatically retrieved from
 the distribution's [debuginfod] server.
 
 [debuginfod]: https://wiki.debian.org/Debuginfod
@@ -248,7 +248,7 @@ For example, to push symbols for libc on Debian:
 
 Note that debuginfod servers for many distributions tend to be rather unreliable: if the tool
 ends up printing `No debug info found for executable, skipping.` for all executables in a
-package, this is likely the reason. This is particularly problematic if you're on a faster
+package, this is likely the reason. This is more likely to take place if you're on a faster
 moving release-channel of your distribution (e.g. Debian Testing).
 
 ### Troubleshooting and support
