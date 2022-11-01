@@ -251,6 +251,13 @@ in a few important ways:
 
 We're aiming that these limitations be improved on and eventually lifted in later versions.
 
+> **Note**
+>
+> If symbols are not displayed in Kibana after ingesting them, try restarting Kibana in your deployment (Cloud -> Deployments -> <Deployment> -> Kibana --> Force Restart). 
+> This is a known issue in 8.5 and will be fixed in later versions. 
+
+
+
 ### Troubleshooting and support
 
 We mentioned earlier that you can spot errors in the host-agent logs.
