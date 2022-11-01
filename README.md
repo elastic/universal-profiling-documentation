@@ -253,7 +253,7 @@ We're aiming that these limitations be improved on and eventually lifted in late
 
 > **Note**
 >
-> If symbols are not displayed in Kibana after ingesting them, try restarting Kibana in your deployment (Cloud Cloud -> Deployments -> Kibana --> Force Restart). 
+> If symbols are not displayed in Kibana after ingesting them, try restarting Kibana in your deployment (Cloud -> Deployments -> <Deployment> -> Kibana --> Force Restart). 
 > This is a known issue in 8.5 and will be fixed in later versions. 
 
 
