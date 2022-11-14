@@ -123,18 +123,6 @@ If everything is working correctly, you can deploy the host-agent across your fl
 
 **Notes on the host-agent configuration**
 
-`elastic-profiling config` prints a default configuration that allows ingesting data into a Cloud deployment.
-There is only one config knob that you can change: `project-id` (default value is `1`).
-
-The `-project-id` flag, or the `project-id` key in the host-agent configuration file, is a parameter to split
-profiling data into logical groups that you control.
-
-You are free to assign any non-zero, unsigned integer to a host-agent deployment you control. This is helpful when
-slicing profiling data in Kibana.
-
-You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
-i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
-
 Note that the printed configuration uses a `stable` version.
 This is good for testing environments, but for production we recommend to use immutable, versioned artifacts.
 
@@ -147,6 +135,20 @@ For container images, you can find a list of versions in the
 
 For Kubernetes deployments, the Helm chart version is already used to configure the same container image, unless
 overwritten with the `version` parameter in values.
+
+### Splitting/filtering data from multiple workloads
+
+`elastic-profiling config` prints a default configuration that allows ingesting data into a Cloud deployment.
+There is only one config knob that you can change: `project-id` (default value is `1`).
+
+The `-project-id` flag, or the `project-id` key in the host-agent configuration file, is a parameter to split
+profiling data into logical groups that you control.
+
+You are free to assign any non-zero, unsigned integer to a host-agent deployment you control. In Kibana,
+the KQL field `service.name` is mapped to `project-id` and can be used to slice/filter data.
+
+You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
+i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
 
 ### Adding symbols for native frames
 
