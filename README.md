@@ -91,7 +91,8 @@ Next, follow these steps to configure data ingestion:
 ### Installing the host-agent
 
 The host-agent is the component that profiles your fleet and needs to be installed and configured on every machine that
-you want to profile. The following instructions guide you through the basic setup of a host-agent on your Linux machine.
+you want to profile. It needs elevated privileges in order to run (currently: `root` / `CAP_SYS_ADMIN`). The following
+instructions guide you through the basic setup of a host-agent on your Linux machine.
 
 If everything is working correctly, you can deploy the host-agent across your fleet in the final step of the following instructions:
 
@@ -337,6 +338,102 @@ deployment.
 of the amount of logs produced.
 
 To enable debug logs, add the `-verbose` command-line flag or the `verbose true` setting in the configuration file.
+
+#### Troubleshoot host-agent K8s deployments
+
+When the Helm chart installation completes, the output has instructions on how to check the host-agent pod status and
+read logs. A series of scenarios that could manifest when the host-agent installation **is not healthy** follows.
+
+##### Taints
+
+K8s clusters often include in their
+setup [taints and tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
+In such cases, a host-agent installation may display no pods or very few pods running, even for a large cluster.
+
+The reason for that: a _taint_ precludes the execution of pods on a node, unless the workload has been _tolerated_.
+The Helm chart `tolerations` key in `values.yaml` sets the toleration of taints, using the official K8s scheduling API
+format.
+
+For some example use cases, we provide a `tolerations` config to be added in the Helm chart `values.yaml`
+
+* To deploy the host-agent on all nodes with taint `workload=python:NoExecute`: add
+  in `values.yaml`
+  ```yaml
+  tolerations:
+    - key: "workload"
+      value: "python"
+      effect: "NoExecute"
+  ```
+
+* To deploy the host-agent on all nodes tainted with _key_ `production` and effect `NoSchedule` (no value
+  provided): add in `values.yaml`
+  ```yaml
+  tolerations:
+    - key: "production"
+      effect: "NoSchedule"
+      operator: Exists
+  ```
+
+* To deploy the host-agent on all nodes, tolerating all taints: add in `values.yaml`
+  ```yaml
+  tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+  ```
+
+##### Security policy enforcement
+
+Some K8s clusters are configured with hardened security add-ons, to limit the blast radius of application
+vulnerabilities being exploited. Different hardening methodologies can impair host-agent operations and
+may for example result in pods continuously restarting after displaying a `CrashLoopBackoff` status.
+
+###### K8s PodSecurityPolicy ([deprecated](https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/))
+
+This K8s API has been deprecated, but some still use it. A PodSecurityPolicy (PSP) may explicitly prevent the execution
+of `privileged` containers across the entire cluster.
+
+Since host-agent _needs_ privileges in most kernels/CRI, you need to build a PSP to allow the host-agent
+DaemonSet to run.
+
+###### K8s policy engines
+
+Read more about these in
+the [SIG-Security doc](https://github.com/kubernetes/sig-security/blob/main/sig-security-docs/papers/policy/kubernetes-policy-management.md)
+.
+
+Tools like the following _may_ prevent the execution of host-agent pods, as the Helm chart builds a cluster role and
+binds it into the host-agent service account (we use it for container metadata):
+
+* Open Policy Agent Gatekeeper
+* Kyverno
+* Fairwinds Polaris
+
+If you have a policy engine in place, you should configure it to allow the host-agent execution and RBAC configs.
+
+###### Network configurations
+
+Even if host-agent pods are running fine, they may not be able to connect to the remote data collector gRPC interface,
+and stay in the startup phase, periodically trying to connect.
+
+Possible causes for it:
+
+* K8s [`NetworkPolicies`](https://kubernetes.io/docs/concepts/services-networking/network-policies/) define connectivity
+  rules that prevent all outgoing traffic unless explicitly allow-listed
+* Cloud/Datacenter provider network rules are restricting egress traffic to allowed destinations only (ACLs)
+
+###### OS-level security
+
+These settings _are not part of Kubernetes_ and may have been included in the setup of the nodes. They may prevent host-agent
+from working properly, as they'd be intercepting syscalls from HA to the Kernel, modifying or blocking them.
+
+If you have implemented security hardening (some providers listed below), you should be aware of the privileges needed by HA.
+
+* gVisor on GKE
+* seccomp filters
+* AppArmor LSM
+
 
 #### Submit a support request
 
