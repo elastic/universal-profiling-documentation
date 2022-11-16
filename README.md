@@ -15,7 +15,6 @@ If you've completed the initial setup, continue to [Universal Profiling features
 ## Get started with Universal Profiling
 
 At the moment, Universal Profiling is **only available on [Elastic Cloud](http://cloud.elastic.co)**.
-Eventually, it may also be available on self-managed or open-source distributions of the Elastic stack.
 
 Enabling Universal Profiling on a deployment currently requires some manual actions. Many of these actions will be
 automated in upcoming releases.
