@@ -27,7 +27,7 @@ Before setting up Universal Profiling, check the following prerequisites:
 - the Integrations Server must be enabled in the deployment.
 - credentials (either an API key or username/password) for the `superuser` Elasticsearch role (typically,
   the `elastic` user).
-- a Linux machine with a terminal to run commands.
+- a x86_64 Linux machine with a terminal to run commands.
 
 ### Deployment configuration example
 
@@ -71,7 +71,7 @@ Next, follow these steps to configure data ingestion:
 
 1. Copy your deployment's Cloud ID from the deployment overview page.
    ![cloud ID](./img/cloud-id.png)
-1. On your Linux machine, open a terminal to execute the following steps.
+1. On your x86_64 Linux machine, open a terminal to execute the following steps.
 1. Download and extract the `elastic-profiling` CLI by replacing the `<PROVIDED_URL>` placeholder in the following example with the URL you received in your private beta onboarding call:
    ```bash
    wget -O- <PROVIDED_URL> | tar xz
