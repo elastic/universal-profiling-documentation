@@ -358,7 +358,8 @@ For some example use cases, we provide a `tolerations` config to be added in the
 
 * To deploy the host-agent on all nodes with taint `workload=python:NoExecute`: add
   in `values.yaml`
-  ```yaml
+  
+  ```
   tolerations:
     - key: "workload"
       value: "python"
@@ -367,7 +368,8 @@ For some example use cases, we provide a `tolerations` config to be added in the
 
 * To deploy the host-agent on all nodes tainted with _key_ `production` and effect `NoSchedule` (no value
   provided): add in `values.yaml`
-  ```yaml
+  
+  ```
   tolerations:
     - key: "production"
       effect: "NoSchedule"
@@ -375,7 +377,8 @@ For some example use cases, we provide a `tolerations` config to be added in the
   ```
 
 * To deploy the host-agent on all nodes, tolerating all taints: add in `values.yaml`
-  ```yaml
+  
+  ```
   tolerations:
     - effect: NoSchedule
       operator: Exists
