@@ -43,6 +43,8 @@ export ES_USER=<ES_USER>
 export ES_PASSWORD=<ES_PASSWORD>
 export ES_CLOUD_ID=<CLOUD_ID>
 export ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
+export KB_USER=<KB_USER>
+export KB_PASSWORD=<KB_PASSWORD>
 ```
 Use the `superuser` Elasticsearch credentials for `<ES_USERNAME>` and `<ES_PASSWORD>`.
 
