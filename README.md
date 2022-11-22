@@ -39,7 +39,7 @@ Before creating a new cluster or upgrading an existing one, review the suggested
 
 As a preparation step, create a text file with the following content (let's name it `config.txt` for later reference):
 ```
-ES_USERNAME=<ES_USERNAME>
+ES_USER=<ES_USER>
 ES_PASSWORD=<ES_PASSWORD>
 ES_CLOUD_ID=<CLOUD_ID>
 ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
