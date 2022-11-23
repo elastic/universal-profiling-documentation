@@ -53,6 +53,14 @@ Follow these steps to enable the Universal Profiling app in Kibana:
 1. Log in to [Elastic Cloud](https://cloud.elastic.co) and locate your deployment.
 2. Click the **Manage deployment** icon next to your deployment.
 3. Click **Edit** in the navigation menu.
+4. Scroll to the Elasticsearch section, and click **Manage user settings
+   and extensions**.
+5. Add this line in the tab "User settings":
+   ```yaml
+   xpack.profiling.enabled: true
+   ```
+6. Click **Back** at the bottom of the **Manage user settings and
+   extensions** pane.
 4. Scroll down to the Kibana section, and click **Edit user settings**.
    ![edit Kibana user settings](./img/kibana-edit-user-settings.png)
 5. Add this line to the user settings:
