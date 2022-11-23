@@ -62,8 +62,6 @@ Follow these steps to enable the Universal Profiling app in Kibana:
    ![edit Kibana user settings](./img/kibana-edit-user-settings-popup.png)
 6. Click **Back** at the bottom of the **User settings** pane.
 7. Scroll to the bottom of the **Edit** page, and click **Save** to save your settings.
-8. If you encounter an error when updating your configuration, [submit a support request](#submit-a-support-request)
-   to have the line from step four added to your Kibana user settings.
 
 Once Kibana has the Universal Profiling app enabled, it's located under **Observability** in the navigation menu.
 
