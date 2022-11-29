@@ -16,9 +16,13 @@ at the end of this documentation for more information.
 Before setting up Universal Profiling, make sure you meet the following requirements:
 
 - An Elastic stack deployment on [Elastic Cloud](http://cloud.elastic.co) at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one). Universal Profiling is currently only available on Elastic Cloud.
-- The Integrations Server must be enabled on your Elastic Cloud deployment.
+- The Integrations Server must be enabled on your deployment.
 - Credentials (either an API key or username and password) for the `superuser` Elasticsearch role (typically, the `elastic` user).
 - An x86_64 Linux machine with a terminal to run commands.
+- The deployment's Cloud ID from the deployment overview page.
+    ![cloud ID](./img/cloud-id.png)
+- The deployment's APM Cluster ID from the deployment overview page.
+   ![apm cluster ID](./img/apm-cluster-id.png)
 
 ### Interpreters
 
@@ -33,24 +37,19 @@ The minimum supported versions of interpreters are:
 - PHP: >= 7.3 
 - Ruby: >= 2.5 
 
-### Recommended deployment configuration
+### Preparation
 
-Before creating a new cluster or upgrading an existing one, review the suggested configuration for each Elastic Stack component.
-
-As a preparation step, create a text file with the following content (let's name it `config.txt` for later reference):
+Create a text file with the following content and name it `config.txt` for later reference:
 ```
 export ES_USER=<ES_USER>
 export ES_PASSWORD=<ES_PASSWORD>
 export ES_CLOUD_ID=<CLOUD_ID>
 export ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
 ```
-Use the `superuser` Elasticsearch credentials for `<ES_USERNAME>` and `<ES_PASSWORD>`.
-
-Get the deployment's Cloud ID from the deployment overview page and use it as `<CLOUD_ID>`.
-    ![cloud ID](./img/cloud-id.png)
-
-Get your deployment's APM Cluster ID from the deployment overview page and use it as `<APM_CLUSTER_ID>`.
-   ![apm cluster ID](./img/apm-cluster-id.png)
+- Use the `superuser` Elasticsearch credentials for `<ES_USERNAME>` and `<ES_PASSWORD>`.
+- Get the deployment's Cloud ID from the deployment overview page and use it as `<CLOUD_ID>`.
+- Get your deployment's APM Cluster ID from the deployment overview page and use it as `<APM_CLUSTER_ID>`.
+- Please use real values instead of the placeholders, e.g. replace `<ES_USER>` with `elastic`.
 
 ### Deployment configuration example
 
