@@ -51,6 +51,8 @@ export ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
 - Get your deployment's APM Cluster ID from the deployment overview page and use it as `<APM_CLUSTER_ID>`.
 - Please use real values instead of the placeholders, e.g. replace `<ES_USER>` with `elastic`.
 
+The environment variables can be overridden by command line arguments, for details run `./elastic-profiling config --help`.
+
 ### Deployment configuration example
 
 The following deployment configuration example was tested to support profiling data from a fleet of up to 500 hosts, each with 8 or 16 CPU cores, for a total of roughly 6000 cores:
