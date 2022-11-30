@@ -29,6 +29,19 @@ Before setting up Universal Profiling, check the following prerequisites:
   the `elastic` user).
 - a x86_64 Linux machine with a terminal to run commands.
 
+#### Interpeters
+
+Univeral Profiling is a system-wide profiling solution with additional support for PHP, Python, Java (or any JVM language), Go, Rust, C/C++, Node.js/V8, Ruby, and Perl.
+
+The minimum supported versions of interpreters are: 
+
+- JVM/JDK: >= 7
+- Python: >= 3.6 
+- V8: >= 8.1.0
+- Perl: >= 5.28 
+- PHP: >= 7.3 
+- Ruby: >= 2.5 
+
 ### Deployment configuration example
 
 Before creating a new cluster or upgrading an existing one, review the suggested configuration tier for each Elastic
