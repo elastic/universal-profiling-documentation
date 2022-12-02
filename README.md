@@ -23,11 +23,24 @@ automated in upcoming releases.
 
 Before setting up Universal Profiling, check the following prerequisites:
 
-- a deployment at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one).
+- an Elastic stack deployment on [Elastic Cloud](http://cloud.elastic.co) at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one).
 - the Integrations Server must be enabled in the deployment.
 - credentials (either an API key or username/password) for the `superuser` Elasticsearch role (typically,
   the `elastic` user).
 - a x86_64 Linux machine with a terminal to run commands.
+
+#### Interpeters
+
+Univeral Profiling is a system-wide profiling solution with additional support for PHP, Python, Java (or any JVM language), Go, Rust, C/C++, Node.js/V8, Ruby, and Perl.
+
+The minimum supported versions of interpreters are: 
+
+- JVM/JDK: >= 7
+- Python: >= 3.6 
+- V8: >= 8.1.0
+- Perl: >= 5.28 
+- PHP: >= 7.3 
+- Ruby: >= 2.5 
 
 ### Deployment configuration example
 
