@@ -161,6 +161,14 @@ the KQL field `service.name` is mapped to `project-id` and can be used to slice/
 You may want to set a per-environment project ID (i.e. dev=3, staging=2, production=1), a per-datacenter project ID (
 i.e. DC1=1, DC2=2), or even a per-k8s-cluster project ID (i.e. us-west2-production=100, eu-west1-production=101).
 
+You can also use the flag `-tags` to associate an arbitrary string with a specific host-agent instance.
+Each tag must match `^[a-zA-Z0-9-:._]+$` regex and use `;` as a separator. Invalid tags will be dropped
+and warnings issued on startup. In Kibana, the KQL field `tags` can be used for filtering. Example:
+
+```
+sudo pf-host-agent/pf-host-agent -project-id=1 -tags='cloud_region:us-central1;env:staging'
+```
+
 ### Adding symbols for native frames
 
 To see function names and line numbers in traces of applications written in programming languages that 
