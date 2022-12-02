@@ -75,7 +75,7 @@ Follow these steps to enable the Universal Profiling app in Kibana:
    ```
    ![edit Elasticsearch user
    settings](./img/es-edit-user-settings-popup.png)
-6. Click **Back** at the bottom of the **Manage user settings and
+6. [Only for version 8.7.0 and better] Click **Back** at the bottom of the **Manage user settings and
    extensions** pane.
 4. Scroll down to the Kibana section, and click **Edit user settings**.
    ![edit Kibana user settings](./img/kibana-edit-user-settings.png)
