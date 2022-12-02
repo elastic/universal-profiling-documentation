@@ -59,7 +59,7 @@ The deployment configuration example in the following table was tested to suppor
 Even if you're profiling a smaller fleet, we recommend configuring at least 2 zones for Elasticsearch and 4 GB of memory
 each for the Integrations Server and Kibana.
 
-### Setting up Universal Profiling on a Cloud deployment
+### <a name="setup"></a> Setting up Universal Profiling on a Cloud deployment
 
 Follow these steps to enable the Universal Profiling app in Kibana:
 
@@ -336,6 +336,16 @@ If the output of the previous command contains error level logs, the following a
    ```text
    rpc error: code = Unauthenticated desc = authentication failed
    ```
+
+- The host-agent is unable to reach the collectionagent service.
+   In this case, you should see a message like the following:
+   ```text
+   Failed to report hostinfo (retrying...): rpc error: code = Unimplemented desc = unknown service collectionagent.CollectionAgent"
+   ```
+
+   This typically means that your Cloud cluster has not been configured for Universal Profiling.
+   Follow the steps under the [setup](#setup) section.
+
 - The APM server (part of the backend in Cloud that receives data from the host-agent) died
    (e.g. ran out of memory):
    ```text
