@@ -169,6 +169,17 @@ and warnings issued on startup. In Kibana, the KQL field `tags` can be used for 
 sudo pf-host-agent/pf-host-agent -project-id=1 -tags='cloud_region:us-central1;env:staging'
 ```
 
+### Using a proxy
+
+The HTTPS_PROXY environment variable can be used to configure a proxy that the host-agent will use.
+The connection to the backend (Elastic Cloud) will be tunneled through the proxy (no MITM-TLS) using
+the CONNECT method. Basic authentication is supported. This can be useful in environments with security
+policies / network restrictions that block direct connections to outside hosts. Example:
+
+```
+export HTTPS_PROXY=http://username:password@proxy:port
+```
+
 ### Adding symbols for native frames
 
 To see function names and line numbers in traces of applications written in programming languages that 
