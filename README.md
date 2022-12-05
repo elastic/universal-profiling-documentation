@@ -360,10 +360,14 @@ If the output of the previous command contains error level logs, the following a
    Error: failed to invoke XXX(): Unavailable rpc error: code = Unavailable desc = unexpected HTTP status code received from server: 502 (Bad Gateway); transport: received unexpected content-type "application/json; charset=UTF-8"
    ```
 
-   Verify that the APM server is running, by browsing to Cloud->Deployments->"Deployment"->Integrations Server
+   Verify that the APM server is running, by browsing to Cloud->Deployments->"Deployment"->"Integrations Server"
    in the [Cloud](https://cloud.elastic.co/home) UI. If the "Copy endpoint" link next to APM is grayed out,
    the APM server is not operational and needs to be restarted. This can take place by clicking "Force Restart".
+
    ![restart-integrations-server](./img/restart-integrations-server.png)
+
+   Additionally (for non-demo workloads), verify that the integrations server has at least 4GB of RAM, which is
+   the recommended configuration. This can be seen in the Cloud UI, under "Integrations Server"->Instances.
 
 If you are unable to find a solution to the host-agent failure, you can raise a support request
 indicating `Universal Profiling` and `host-agent` as source of the problem.
