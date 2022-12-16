@@ -16,7 +16,7 @@ at the end of this documentation for more information.
 Before setting up Universal Profiling, make sure you meet the following requirements:
 
 - An Elastic stack deployment on [Elastic Cloud](http://cloud.elastic.co) at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one). Universal Profiling is currently only available on Elastic Cloud.
-- The Integrations Server enabled in your Elastic Cloud deployment.
+- The Integrations Server must be enabled on your Elastic Cloud deployment.
 - Credentials (either an API key or username and password) for the `superuser` Elasticsearch role (typically, the `elastic` user).
 - An x86_64 Linux machine with a terminal to run commands.
 
@@ -33,9 +33,9 @@ The minimum supported versions of interpreters are:
 - PHP: >= 7.3 
 - Ruby: >= 2.5 
 
-### Deployment configuration recommendations
+### Recommended deployment configuration
 
-Before creating a new cluster or upgrading an existing one, review the suggested deployment configuration for each Elastic Stack component.
+Before creating a new cluster or upgrading an existing one, review the suggested configuration for each Elastic Stack component.
 
 The following deployment configuration example was tested to support profiling data from a fleet of up to 500 hosts, each with 8 or 16 CPU cores, for a total of roughly 6000 cores:
 
