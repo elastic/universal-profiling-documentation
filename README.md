@@ -39,13 +39,17 @@ The minimum supported versions of interpreters are:
 
 ### Preparation
 
-Create a text file with the following content and name it `config.txt` for later reference:
+Prepare a configuration file `config.txt` with the following command, using the values from your deployment instead of the placeholders:
 ```
+cat <<EOF > config.txt
 export ES_USER=<ES_USER>
 export ES_PASSWORD=<ES_PASSWORD>
 export ES_CLOUD_ID=<CLOUD_ID>
 export ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
+EOF
 ```
+This file will be used to run commands later on.
+
 - Use the `superuser` Elasticsearch credentials for `<ES_USERNAME>` and `<ES_PASSWORD>`.
 - Get the deployment's Cloud ID from the deployment overview page and use it as `<CLOUD_ID>`.
 - Get your deployment's APM Cluster ID from the deployment overview page and use it as `<APM_CLUSTER_ID>`.
