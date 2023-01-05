@@ -16,7 +16,7 @@ at the end of this documentation for more information.
 Before setting up Universal Profiling, make sure you meet the following requirements:
 
 - An Elastic stack deployment on [Elastic Cloud](http://cloud.elastic.co) at version 8.5.0 or higher (you can either provision a new one or upgrade an existing one). Universal Profiling is currently only available on Elastic Cloud.
-- The Integrations Server must be enabled on your deployment.
+- The Integrations Server must be enabled on your Elastic Cloud deployment.
 - Credentials (either an API key or username and password) for the `superuser` Elasticsearch role (typically, the `elastic` user).
 - An x86_64 Linux machine with a terminal to run commands.
 - The deployment's Cloud ID from the deployment overview page.
