@@ -108,7 +108,7 @@ To configure data ingestion:
   
 1. Set up Universal Profiling in your deployment.
    ```
-   . config.txt
+   source config.txt
    ./elastic-profiling setup cloud --reset
    ```
 1. Confirm that this is the first time setting up Universal Profiling in the terminal prompt.
@@ -131,7 +131,7 @@ To complete the basic setup of a host-agent on your Linux machine:
 
 1. Print the `binary` configuration to test it on your current Linux machine by running:
    ```bash
-   . config.txt
+   source config.txt
    ./elastic-profiling config --binary
    ```
 1. Run the host-agent with the provided steps, testing that your Universal Profiling deployment is working as expected.
@@ -203,7 +203,7 @@ No additional parameters need to be passed during the build. To push symbols for
 invoke the `elastic-profiling` tool:
 
 ```
-. config.txt
+source config.txt
 ./elastic-profiling push-symbols executable -e ./my-go-app 
 ```
 
@@ -218,7 +218,7 @@ production, but needs to be present temporarily to push them to the Elastic clus
 If you don't mind deploying your applications with debug symbols, run:
 
 ```
-. config.txt
+source config.txt
 ./elastic-profiling push-symbols executable -e ./my-c-app 
 ```
 
@@ -230,7 +230,7 @@ the symbols have been pushed, you can remove the unstripped binary:
 ```
 cp ./my-app ./my-stripped-app
 strip ./my-stripped-app
-. config.txt
+source config.txt
 ./elastic-profiling push-symbols executable -e ./my-stripped-app -d ./my-app
 rm ./my-app
 ```
@@ -261,14 +261,14 @@ For this to work, make sure that the debuginfod client is installed on your mach
 Then, invoke `elastic-profiling` as follows:
 
 ```
-. config.txt
+source config.txt
 ./elastic-profiling push-symbols package -p package-name
 ```
 
 For example, to push symbols for libc on Debian:
 
 ```
-. config.txt
+source config.txt
 ./elastic-profiling push-symbols package -p libc6
 ```
 
