@@ -19,6 +19,10 @@ Before setting up Universal Profiling, make sure you meet the following requirem
 - The Integrations Server must be enabled on your Elastic Cloud deployment.
 - Credentials (either an API key or username and password) for the `superuser` Elasticsearch role (typically, the `elastic` user).
 - An x86_64 Linux machine with a terminal to run commands.
+- The deployment's Cloud ID from the deployment overview page.
+    ![cloud ID](./img/cloud-id.png)
+- The deployment's APM Cluster ID from the deployment overview page.
+   ![apm cluster ID](./img/apm-cluster-id.png)
 
 ### Interpreters
 
@@ -33,9 +37,27 @@ The minimum supported versions of interpreters are:
 - PHP: >= 7.3 
 - Ruby: >= 2.5 
 
-### Recommended deployment configuration
+### Preparation
 
-Before creating a new cluster or upgrading an existing one, review the suggested configuration for each Elastic Stack component.
+Prepare a configuration file `config.txt` with the following command, using the values from your deployment instead of the placeholders:
+```
+cat <<EOF > config.txt
+export ES_USER=<ES_USER>
+export ES_PASSWORD=<ES_PASSWORD>
+export ES_CLOUD_ID=<CLOUD_ID>
+export ES_APM_CLUSTER_ID=<APM_CLUSTER_ID>
+EOF
+```
+This file will be used to run commands later on.
+
+- Use the `superuser` Elasticsearch credentials for `<ES_USERNAME>` and `<ES_PASSWORD>`.
+- Get the deployment's Cloud ID from the deployment overview page and use it as `<CLOUD_ID>`.
+- Get your deployment's APM Cluster ID from the deployment overview page and use it as `<APM_CLUSTER_ID>`.
+- Please use real values instead of the placeholders, e.g. replace `<ES_USER>` with `elastic`.
+
+The environment variables can be overridden by command line arguments, for details run `./elastic-profiling config --help`.
+
+### Deployment configuration example
 
 The following deployment configuration example was tested to support profiling data from a fleet of up to 500 hosts, each with 8 or 16 CPU cores, for a total of roughly 6000 cores:
 
@@ -76,18 +98,18 @@ After you've enabled Universal Profiling in Kibana, it's located under **Observa
 
 To configure data ingestion:
 
-1. Copy the Cloud ID from the deployment overview page.
-   ![cloud ID](./img/cloud-id.png)
-1. From a terminal on your x86_64 Linux machine, download and extract the `elastic-profiling` CLI by replacing the `<PROVIDED_URL>` placeholder in the following example with the URL you received in your private beta onboarding call:
+1. On your x86_64 Linux machine, open a terminal to execute the following steps.
+1. Download and extract the `elastic-profiling` CLI by replacing the `<PROVIDED_URL>` placeholder in the following example with the URL you received in your private beta onboarding call:
    ```bash
    wget -O- <PROVIDED_URL> | tar xz
    chmod +x elastic-profiling
    ```
     If you haven't signed up for the private beta, sign up [here](https://docs.google.com/forms/d/e/1FAIpQLSd-SWVgvhO7Z_jAfaV9_bFGa0dUZPuX0JORzPGS8SDP7G-dVQ/viewform).
   
-1. Use the Cloud ID and the `superuser` Elasticsearch credentials to set up Universal Profiling in your deployment by replacing the placeholders in the following example with your deployment's values.
+1. Set up Universal Profiling in your deployment.
    ```
-   ./elastic-profiling setup cloud --reset --cloud-id=<CLOUD_ID> --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
+   source config.txt
+   ./elastic-profiling setup cloud --reset
    ```
 1. Confirm that this is the first time setting up Universal Profiling in the terminal prompt.
    If Universal Profiling is already installed, confirm with your cluster administrator that it's ok to erase all existing profiling data.
@@ -98,9 +120,6 @@ The host-agent profiles your fleet, and you need to install and configure it on 
 
 To complete the basic setup of a host-agent on your Linux machine:
 
-1. Copy the APM Cluster ID from the deployment overview page.
-   ![apm cluster ID](./img/apm-cluster-id.png)
-1. Copy the Cloud ID from the deployment overview page (as shown in step 1 of the previous section).
 1. Use `elastic-profiling` to print the host-agent installation and configuration instructions for various package formats.
    The default package format is binary, but there are also instructions for DEB, RPM, Docker, and Kubernetes. The DEB and
    RPM package formats contain systemd service definitions that ensure the host-agent stays running as a service.
@@ -112,8 +131,8 @@ To complete the basic setup of a host-agent on your Linux machine:
 
 1. Print the `binary` configuration to test it on your current Linux machine by running:
    ```bash
-   ./elastic-profiling config --binary --apm-cluster-id=<APM_CLUSTER_ID> --cloud-id=<CLOUD_ID> \
-     --es-user=<ES_USERNAME> --es-password=<ES_PASSWORD>
+   source config.txt
+   ./elastic-profiling config --binary
    ```
 1. Run the host-agent with the provided steps, testing that your Universal Profiling deployment is working as expected.
    The host-agent prints out logs that notify you if the connection to Elastic Cloud is not working.
@@ -175,17 +194,7 @@ export HTTPS_PROXY=http://username:password@proxy:port
 ## Add symbols for native frames
 
 To see function names and line numbers in traces of applications written in programming languages that 
-compile to native code (C, C++, Rust, Go, ...), the user must first push symbols to the cluster. You can do this with the `elastic-profiling push-symbols` command. All variants of this command require the
-same authentication parameters as the `config` command discussed previously:
-
-```
-   --apm-cluster-id=<cluster id>
-   --cloud-id=<cloud id>
-   --es-user=<elasticsearch user>
-   --es-password=<elasticsearch password>
-```
-
-These four parameters are referred to as `<auth args>` in the following sub-sections.
+compile to native code (C, C++, Rust, Go, ...), the user must first push symbols to the cluster. You can do this with the `elastic-profiling push-symbols` command.
 
 ### Go applications
 
@@ -194,7 +203,8 @@ No additional parameters need to be passed during the build. To push symbols for
 invoke the `elastic-profiling` tool:
 
 ```
-./elastic-profiling push-symbols executable <auth args> -e ./my-go-app 
+source config.txt
+./elastic-profiling push-symbols executable -e ./my-go-app 
 ```
 
 ### C, C++, and Rust applications
@@ -208,7 +218,8 @@ production, but needs to be present temporarily to push them to the Elastic clus
 If you don't mind deploying your applications with debug symbols, run:
 
 ```
-./elastic-profiling push-symbols executable <auth args> -e ./my-c-app 
+source config.txt
+./elastic-profiling push-symbols executable -e ./my-c-app 
 ```
 
 If you don't want debug symbols in production, copy the executable and strip the copy.
@@ -219,7 +230,8 @@ the symbols have been pushed, you can remove the unstripped binary:
 ```
 cp ./my-app ./my-stripped-app
 strip ./my-stripped-app
-./elastic-profiling push-symbols executable <auth args> -e ./my-stripped-app -d ./my-app
+source config.txt
+./elastic-profiling push-symbols executable -e ./my-stripped-app -d ./my-app
 rm ./my-app
 ```
 
@@ -249,13 +261,15 @@ For this to work, make sure that the debuginfod client is installed on your mach
 Then, invoke `elastic-profiling` as follows:
 
 ```
-./elastic-profiling push-symbols package <auth args> -p package-name
+source config.txt
+./elastic-profiling push-symbols package -p package-name
 ```
 
 For example, to push symbols for libc on Debian:
 
 ```
-./elastic-profiling push-symbols package <auth args> -p libc6
+source config.txt
+./elastic-profiling push-symbols package -p libc6
 ```
 
 > **Note**
